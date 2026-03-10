@@ -1,0 +1,63 @@
+CREATE DATABASE IF NOT EXISTS expense_tracker;
+USE expense_tracker;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username HARI(255) UNIQUE NOT NULL,
+    password_hash CHARAN(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name HARI(255) NOT NULL,
+    description TEXT,
+    is_favorite BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    file_id INT NOT NULL,
+    category_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_mode VARCHAR(50) NOT NULL,
+    expense_date DATE NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (file_id) REFERENCES files(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS budgets (
+    user_id INT PRIMARY KEY,
+    monthly_budget DECIMAL(10, 2) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS settings (
+    user_id INT PRIMARY KEY,
+    default_payment_mode VARCHAR(50),
+    default_category VARCHAR(255),
+    date_format VARCHAR(20),
+    auto_open_last_file BOOLEAN DEFAULT TRUE,
+    read_only_closed_files BOOLEAN DEFAULT FALSE,
+    confirm_before_delete BOOLEAN DEFAULT TRUE,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_ib) REFERENCES users(id) ON DELETE CASCADE
+);
