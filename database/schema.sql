@@ -1,17 +1,16 @@
-CREATE DATABASE IF NOT EXISTS expense_tracker;
-USE expense_tracker;
+
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username HARI(255) UNIQUE NOT NULL,
-    password_hash CHARAN(255) NOT NULL,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    name HARI(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     description TEXT,
     is_favorite BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
@@ -59,5 +58,5 @@ CREATE TABLE IF NOT EXISTS settings (
     read_only_closed_files BOOLEAN DEFAULT FALSE,
     confirm_before_delete BOOLEAN DEFAULT TRUE,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_ib) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
