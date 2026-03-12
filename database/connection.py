@@ -10,7 +10,8 @@ DB_CONFIG = {
     "user": os.environ.get("DB_USER", "root"),
     "password": os.environ.get("DB_PASSWORD", ""),
     "database": os.environ.get("DB_NAME", "expense_tracker"),
-    "port": int(os.environ.get("DB_PORT", 3306))
+    "port": int(os.environ.get("DB_PORT", 3306)),
+    "ssl_disabled": False,
 }
 
 def get_connection():
@@ -19,6 +20,7 @@ def get_connection():
         return conn
     except Error as e:
         raise RuntimeError(f"Database connection failed: {e}")
+
 
 def execute_query(query, params=None, fetchone=False, fetchall=False):
     conn = get_connection()
