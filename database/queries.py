@@ -41,6 +41,23 @@ def add_expense(user_id, file_id, category_id, title, description, amount, payme
         (user_id, file_id, category_id, title, description, amount, payment_mode, expense_date)
     )
 
+def update_expense(expense_id, user_id, title, description, amount, category_id, payment_mode, expense_date):
+    execute_query(
+        """
+        UPDATE expenses
+        SET title = %s, description = %s, amount = %s, category_id = %s,
+            payment_mode = %s, expense_date = %s
+        WHERE id = %s AND user_id = %s
+        """,
+        (title, description, amount, category_id, payment_mode, expense_date, expense_id, user_id)
+    )
+
+def delete_expense(expense_id, user_id):
+    execute_query(
+        "DELETE FROM expenses WHERE id = %s AND user_id = %s",
+        (expense_id, user_id)
+    )
+
 def get_file_total(user_id, file_id):
     result = execute_query(
         """

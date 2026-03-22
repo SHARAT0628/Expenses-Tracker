@@ -1,82 +1,74 @@
-# Expense Tracker Web Application
+# Expense Tracker
 
-## Overview
-This project is a full-stack, session-based expense tracking web application that allows users to manage personal finances across multiple expense files (ledgers). Each user can create, manage, and analyze expenses in isolated files, ensuring complete data ownership and clarity.
+A full-stack expense tracking application with a Python FastAPI backend and a React (Vite) mobile-optimized frontend.
 
-The application emphasizes correctness, usability, and analytical clarity rather than unnecessary complexity.
+## Project Structure
 
----
-
-## Key Features
-
-### Authentication & User Isolation
-- Secure user registration and login
-- Session-based access control
-- Complete isolation of user data
-
-### Expense Management
-- Multiple expense files (ledgers) per user
-- Add, edit, duplicate, and delete expenses
-- File-level total calculation as the single source of truth
-
-### Dashboard (Home)
-- Snapshot view of financial status
-- Total spend, number of expenses, remaining budget
-- Active file context reflected globally
-
-### Visual Analysis
-- Spending over time (line chart)
-- Payment mode analysis (bar chart)
-- Date-range filtering
-- Clean matplotlib-based visualizations
-- Category-based graphs intentionally excluded to avoid misleading insights
-
-### Profile & Budget Ownership
-- User profile with account details
-- Monthly budget management
-- Budget usage tracking
-- Usage statistics (files created, expenses logged, active days)
-
-### Settings
-- Application behavior controls
-- Default payment mode and category
-- Auto-open last file on login
-- Confirm-before-delete toggle
-- No financial logic in settings (by design)
-
-### Reports
-- CSV export of expenses
-- File-scoped and date-range based reporting
-- Excel/Google Sheets compatible
-
----
-
-## Tech Stack
-
-- **Frontend**: Streamlit
-- **Backend**: Python
-- **Database**: MySQL
-- **Visualization**: Matplotlib
-- **Data Handling**: Pandas
-
----
-
-## Architecture Highlights
-
-- Database-first schema design
-- Clear separation of concerns:
-  - Database logic
-  - Business logic
-  - UI components
-- Session state as a single source of truth
-- File-scoped analytics and reporting
-
----
+```
+Expenses Tracker/
+├── backend/           # FastAPI API server
+│   └── api.py
+├── auth/              # Authentication (login, register)
+│   ├── login.py
+│   └── register.py
+├── database/          # MySQL database layer
+│   ├── connection.py
+│   ├── queries.py
+│   └── schema.sql
+├── utils/             # Utilities (password hashing)
+│   └── hashing.py
+├── tools/             # Admin scripts
+│   ├── init_remote_db.py
+│   └── list_users.py
+├── frontend/          # React Mobile UI (Vite + Tailwind)
+│   ├── src/
+│   │   ├── app/screens/   # All app screens
+│   │   ├── lib/api.ts     # API client
+│   │   └── styles/        # CSS themes
+│   ├── package.json
+│   └── vite.config.ts
+├── requirements.txt   # Python dependencies
+└── README.md
+```
 
 ## How to Run Locally
 
-1. Clone the repository
-2. Create and activate a virtual environment
-3. Install dependencies:
-4. Configure MySQL database and tables
-5. Run the application:
+### 1. Start the Backend
+
+```bash
+cd "Expenses Tracker"
+.\venv\Scripts\Activate.ps1
+uvicorn backend.api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+### 2. Start the Frontend
+
+```bash
+cd "Expenses Tracker\frontend"
+npm install
+npm run dev
+```
+
+### 3. Open the App
+
+Open **http://localhost:5173/** in your browser.
+
+> **Note:** Both servers must be running at the same time.
+
+## Environment Variables
+
+Create a `.env` file in the project root with your database credentials:
+
+```env
+DB_HOST=your_host
+DB_PORT=your_port
+DB_USER=your_user
+DB_PASSWORD=your_password
+DB_NAME=your_database
+```
+
+## Tech Stack
+
+- **Backend:** Python, FastAPI, MySQL
+- **Frontend:** React, Vite, Tailwind CSS, Recharts
+- **Database:** MySQL (Aiven cloud or local)

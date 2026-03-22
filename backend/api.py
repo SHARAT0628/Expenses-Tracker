@@ -117,6 +117,20 @@ def delete_expense_api(expense_id: int, user_id: int):
     delete_expense(expense_id, user_id)
     return {"message": "Expense deleted"}
 
+class UpdateExpenseRequest(BaseModel):
+    user_id: int
+    title: str
+    description: Optional[str] = None
+    amount: float
+    category_id: int
+    payment_mode: str
+    expense_date: date
+
+@app.put("/api/expenses/{expense_id}")
+def update_expense_api(expense_id: int, req: UpdateExpenseRequest):
+    update_expense(expense_id, req.user_id, req.title, req.description, req.amount, req.category_id, req.payment_mode, req.expense_date)
+    return {"message": "Expense updated"}
+
 @app.get("/api/categories")
 def get_categories(user_id: int):
     categories = get_user_categories(user_id)
